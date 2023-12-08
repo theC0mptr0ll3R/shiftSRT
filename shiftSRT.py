@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # shiftSRT
 # Oki Mikito - Media to People, Incorporated, 2023
-# Usage example (1): shiftSRT -target 00:05:42.240 someSRTfile.srt
+# Usage example (1): shiftSRT -target 00:05:42,240 -shift 00:00:02,100 someSRTfile.srt
 # ^^^ ... takes in "someSRTfile.srt", stretch or modify the SRT timings to match the specified end target ("00:05:42.240")
 # ver. 1.0 : Dec 09, 2023
 
@@ -15,6 +15,7 @@ original_endTC = ''
 target_endTC = ''
 arg = sys.argv
 targetRatio = 1.0
+shiftTC = ''
 
 newFileName = arg[-1].replace('.SRT', '.srt') # ...foolproof, just in case
 newFileName = newFileName.replace('.srt', '_shiftSRTd.srt')
@@ -25,6 +26,9 @@ if not '-target' in arg:
 else:   # ... convert the target TC to timedelta
     target_endTC = arg[arg.index('-target') + 1]
     target_endTC = srt.srt_timestamp_to_timedelta(target_endTC)
+    if '-shift' in arg: # ... to see how much timestamp shifting is required
+        shiftTC = arg[arg.index('-shift') + 1]
+        shiftTC = srt.srt_timestamp_to_timedelta(shiftTC)
 
 with codecs.open(arg[-1], 'r', encoding='utf_8_sig') as fbuf:
     f = fbuf.read()
@@ -45,12 +49,12 @@ for t in fdic.values(): # ... replacing timecode instance w/ ID for later proces
 # ... find out the original SRT timestamp to see how much shrinking/stretching it may require:
 original_endTC = list(fdic.values())[-1]
 original_endTC = srt.srt_timestamp_to_timedelta(original_endTC)
-targetRatio = target_endTC / original_endTC
+targetRatio = (target_endTC - shiftTC) / original_endTC
 print('ratio:', round(targetRatio * 100, 2), '%')
 
 for i in fdic.keys():
     td = srt.srt_timestamp_to_timedelta(fdic[i])
-    td = td * targetRatio
+    td = (td + shiftTC) * targetRatio
     f = f.replace(i, srt.timedelta_to_srt_timestamp(td))
 
 with codecs.open(newFileName, 'w', encoding='utf_8_sig') as tf:
