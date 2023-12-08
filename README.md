@@ -1,5 +1,5 @@
 # shiftSRT
-shiftSRT.py ... a Python3 tool to stretch/shrink SRT timestamps (to fit modified video).
+shiftSRT.py ... a Python3 tool to stretch/shrink SRT timestamps (to fit time-stretched/modified video).
 
 I had to sync a bunch of SRT subtitle files to synchronize to time-stretched videos... and it took too much time to manually edit timestamps! So I came up with a coding solution, in hope to save hours after hours of my time.
 
