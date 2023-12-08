@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-# shiftSRT
+# shiftSRT.py
 # Oki Mikito - Media to People, Incorporated, 2023
-# Usage example (1): shiftSRT -target 00:05:42,240 -shift 00:00:02,100 someSRTfile.srt
+# Usage example (1): shiftSRT.py -target 00:05:42,240 -shift 00:00:02,100 someSRTfile.srt
 # ^^^ ... takes in "someSRTfile.srt", stretch or modify the SRT timings to match the specified end target ("00:05:42.240")
 # ver. 1.0 : Dec 09, 2023
 
