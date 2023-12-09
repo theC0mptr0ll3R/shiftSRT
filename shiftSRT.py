@@ -15,7 +15,7 @@ original_endTC = ''
 target_endTC = ''
 arg = sys.argv
 targetRatio = 1.0
-shiftTC = ''
+shiftTC = '00:00:00,000'
 
 newFileName = arg[-1].replace('.SRT', '.srt') # ...foolproof, just in case
 newFileName = newFileName.replace('.srt', '_shiftSRTd.srt')
@@ -28,7 +28,7 @@ else:   # ... convert the target TC to timedelta
     target_endTC = srt.srt_timestamp_to_timedelta(target_endTC)
     if '-shift' in arg: # ... to see how much timestamp shifting is required
         shiftTC = arg[arg.index('-shift') + 1]
-        shiftTC = srt.srt_timestamp_to_timedelta(shiftTC)
+    shiftTC = srt.srt_timestamp_to_timedelta(shiftTC)
 
 with codecs.open(arg[-1], 'r', encoding='utf_8_sig') as fbuf:
     f = fbuf.read()
